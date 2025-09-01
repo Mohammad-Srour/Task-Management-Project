@@ -1,0 +1,75 @@
+.edit-task {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+}
+
+fieldset {
+  width: 350px;
+  padding: 20px;
+  border: 2px solid #228c61;
+  border-radius: 10px;
+  background: linear-gradient(to bottom, #2a2a2a, #3a3a3a);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  color: #fff;
+}
+
+legend {
+  font-size: 22px;
+  font-weight: bold;
+  color: #228c61;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 550;
+  color: #e5e5e5;
+  font-size: 16px;
+}
+
+input, select, textarea {
+  padding: 8px;
+  border: 1px solid #555;
+  border-radius: 6px;
+  background-color: #f0f0f0;
+  font-size: 14px;
+}
+
+input:focus, select:focus, textarea:focus {
+  border: 1px solid #228c61;
+  box-shadow: 0 0 6px rgba(34, 140, 97, 0.5);
+  outline: none;
+}
+
+button {
+  padding: 10px;
+  width: 100%;
+  background: #228c61;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  background: #1b6f4d;
+  transform: translateY(-2px);
+}
+
+.error {
+  margin-top: 10px;
+  color: #ff4d4d;
+  font-weight: bold;
+  text-align: center;
+}

@@ -1,0 +1,29 @@
+<div class="profile-container" *ngIf="user; else loading">
+  <fieldset>
+    <legend><span class="material-icons">person</span> Profile</legend>
+
+    <p>
+      <span class="material-icons">badge</span>
+      <strong>ID:</strong> {{ user.id }}
+    </p>
+
+    <p>
+      <span class="material-icons">account_circle</span>
+      <strong>Username:</strong> {{ user.userName }}
+    </p>
+
+    <p>
+      <span class="material-icons">email</span>
+      <strong>Email:</strong> {{ user.email }}
+    </p>
+
+    <p>
+      <span class="material-icons">event</span>
+      <strong>Created At:</strong> {{ user.createdAt | date:'medium' }}
+    </p>
+  </fieldset>
+</div>
+
+<ng-template #loading>
+  <p>Loading profile...</p>
+</ng-template>

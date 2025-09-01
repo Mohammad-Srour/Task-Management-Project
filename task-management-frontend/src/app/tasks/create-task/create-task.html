@@ -1,0 +1,40 @@
+<div class="create-task">
+  <fieldset>
+    <legend>Create New Task</legend>
+
+    <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+      <label>Title:</label>
+      <input type="text" formControlName="title" required />
+      <div class="error" *ngIf="taskForm.get('title')?.touched && taskForm.get('title')?.hasError('required')">
+        Title is required
+      </div>
+
+      <label>Description:</label>
+      <textarea formControlName="description"></textarea>
+
+      <label>Status:</label>
+      <select formControlName="status">
+        <option [ngValue]="taskStatus.New">New</option>
+        <option [ngValue]="taskStatus.InProgress">In Progress</option>
+        <option [ngValue]="taskStatus.Done">Done</option>
+      </select>
+
+      <label>Priority:</label>
+      <select formControlName="priority">
+        <option [ngValue]="taskPriority.Low">Low</option>
+        <option [ngValue]="taskPriority.Medium">Medium</option>
+        <option [ngValue]="taskPriority.High">High</option>
+      </select>
+
+      <label>Due Date:</label>
+      <input type="date" formControlName="dueDate" required />
+      <div class="error" *ngIf="taskForm.get('dueDate')?.touched && taskForm.get('dueDate')?.hasError('required')">
+        Due date is required
+      </div>
+
+      <button type="submit" class="btn-submit" [disabled]="isSubmitting">Create Task</button>
+    </form>
+  </fieldset>
+
+  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+</div>

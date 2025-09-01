@@ -1,0 +1,75 @@
+.login-form {
+  max-width: 400px;
+  margin: 100px auto;
+  padding: 20px;
+  background: #1e1e2f; // نفس الخلفية الداكنة
+  border-radius: 12px;
+  color: #f5f5f5;
+  font-family: Arial, sans-serif;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+fieldset {
+  border: 1px solid #2a2a3d;
+  border-radius: 10px;
+  padding: 20px;
+  background: #2a2a3d;
+}
+
+legend {
+  font-size: 22px;
+  font-weight: bold;
+  color: #ffcc70; // نفس لون العنوان مثل Register
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+  font-size: 14px;
+  color: #e5e5e5;
+}
+
+input {
+  padding: 10px;
+  border: 1px solid #555;
+  border-radius: 6px;
+  font-size: 14px;
+  background: #1e1e2f;
+  color: #f5f5f5;
+}
+
+input:focus {
+  border: 1px solid #ffcc70;
+  outline: none;
+  box-shadow: 0 0 6px rgba(255, 204, 112, 0.3);
+}
+
+button.btn-submit {
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  background: #3a9d23;  // أخضر داكن
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button.btn-submit:hover {
+  background: #2e7d1c; // أخضر أغمق عند hover
+  transform: translateY(-2px);
+}
+
+.error {
+  color: #ff4d4d;
+  font-size: 13px;
+  margin-top: 4px;
+}

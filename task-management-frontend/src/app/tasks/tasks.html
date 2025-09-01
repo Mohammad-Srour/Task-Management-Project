@@ -1,0 +1,67 @@
+<div class="task-list">
+  <h2 class="task-title">My Tasks</h2>
+
+  <div class="filters">
+    <label class="filter-item">
+      Status:
+      <select [(ngModel)]="filters.status" class="filter-select">
+        <option [ngValue]="undefined">All</option>
+        <option [ngValue]="0">New</option>
+        <option [ngValue]="1">In Progress</option>
+        <option [ngValue]="2">Done</option>
+      </select>
+    </label>
+
+    <label class="filter-item">
+      Priority:
+      <select [(ngModel)]="filters.priority" class="filter-select">
+        <option [ngValue]="undefined">All</option>
+        <option [ngValue]="0">Low</option>
+        <option [ngValue]="1">Medium</option>
+        <option [ngValue]="2">High</option>
+      </select>
+    </label>
+
+    <label class="filter-item">
+      Due Date:
+      <input type="date" [(ngModel)]="filters.dueDate" class="filter-date" />
+    </label>
+
+    <button class="btn btn-apply" (click)="applyFilter()">Apply Filter</button>
+    <button class="btn btn-reset" (click)="resetFilter()">Reset</button>
+  </div>
+
+  <div class="task-list-scroll">
+    <ul class="task-items">
+      <li class="task-item" *ngFor="let task of tasks">
+        <div class="task-info">
+          <h3 class="task-name" [class.completed]="task.status === 2">
+            {{ task.title }}
+          </h3>
+          <p class="description">
+            <strong>Description:</strong> {{ task.description || 'No description' }}
+          </p>
+          <div class="meta">
+            <div><strong>Priority:</strong> {{ getPriorityLabel(task.priority) }}</div>
+            <div><strong>Status:</strong> {{ getStatusLabel(task.status) }}</div>
+            <div *ngIf="task.dueDate">
+              <strong>Due Date:</strong> {{ task.dueDate | date:'mediumDate' }}
+            </div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-complete" (click)="toggleComplete(task)">
+            {{ task.status === 2 ? 'Undo' : 'Complete' }}
+          </button>
+          <button class="btn btn-edit" (click)="editTask(task.id!)">Edit</button>
+          <button class="btn btn-delete" (click)="deleteTask(task.id!)">Delete</button>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div *ngIf="tasks.length === 0" class="empty">
+    No Task Yet
+  </div>
+</div>

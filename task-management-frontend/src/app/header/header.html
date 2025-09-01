@@ -1,0 +1,36 @@
+<div class="navigation">
+  <h3>
+    <span class="material-icons">assignment</span> Task Management
+  </h3>
+  <div class="nav-links">
+
+    <a routerLink="/"><span class="material-icons">home</span> Home</a>
+
+    <a *ngIf="!authService.isLoggedIn()" routerLink="/login">
+      <span class="material-icons">login</span> Login
+    </a>
+    <a *ngIf="!authService.isLoggedIn()" routerLink="/register">
+      <span class="material-icons">person_add</span> Register
+    </a>
+
+    <ng-container *ngIf="authService.isLoggedIn()">
+      <a routerLink="/profile">
+        <span class="material-icons">person</span> Profile
+      </a>
+     
+      <a routerLink="/tasks/create">
+        <span class="material-icons">add_circle</span> Create Task
+      </a>
+       <a routerLink="/tasks">
+        <span class="material-icons">list</span> All Tasks
+      </a>
+      <a routerLink="/categories">
+        <span class="material-icons">add_circle</span> Create Categories
+      </a>
+      <a (click)="logout()">
+        <span class="material-icons">logout</span> Logout
+      </a>
+    </ng-container>
+
+  </div>
+</div>

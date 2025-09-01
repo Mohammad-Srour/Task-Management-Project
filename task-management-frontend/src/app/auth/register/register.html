@@ -1,0 +1,37 @@
+<div class="register-form">
+  <fieldset>
+    <legend>Register</legend>
+
+    <form (ngSubmit)="register()" #registerForm="ngForm">
+      <!-- Username -->
+      <label>
+        Username:
+        <input type="text" [(ngModel)]="userName" name="userName" required />
+      </label>
+      <div class="error" *ngIf="registerForm.submitted && !userName">
+        Username is required
+      </div>
+
+      <!-- Email -->
+      <label>
+        Email:
+        <input type="email" [(ngModel)]="email" name="email" required />
+      </label>
+      <div class="error" *ngIf="registerForm.submitted && !email">
+        Email is required
+      </div>
+
+      <!-- Password -->
+      <label>
+        Password:
+        <input type="password" [(ngModel)]="password" name="password" required minlength="6" />
+      </label>
+      <div class="error" *ngIf="registerForm.submitted && !password">
+        Password is required
+      </div>
+
+      <!-- Button -->
+      <button type="submit" class="btn-submit">Register</button>
+    </form>
+  </fieldset>
+</div>

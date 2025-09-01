@@ -1,0 +1,45 @@
+.profile-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+  font-family: Arial, sans-serif;
+}
+
+.profile-container fieldset {
+  width: 380px;
+  padding: 20px;
+  border: 1px solid #2a2a3d;
+  border-radius: 12px;
+  background: #2a2a3d;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  color: #f5f5f5;
+}
+
+.profile-container legend {
+  font-size: 20px;
+  font-weight: bold;
+  color: #ffcc70;
+}
+
+.profile-container p {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 12px 0;
+  font-size: 15px;
+  color: #ddd;
+}
+
+.profile-container p strong {
+  color: #ffcc70;
+}
+
+.profile-container .material-icons {
+  font-size: 20px;
+  color: #aaa;
+}
+
+.profile-container fieldset:hover {
+  box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+  transition: all 0.3s ease;
+}

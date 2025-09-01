@@ -1,0 +1,27 @@
+<div class="login-form">
+  <fieldset>
+    <legend>Login</legend>
+    <form (ngSubmit)="login()" #loginForm="ngForm">
+      <!-- Email -->
+      <label>
+        Email:
+        <input type="email" [(ngModel)]="email" name="email" required />
+      </label>
+      <div class="error" *ngIf="loginForm.submitted && !email">
+        Email is required
+      </div>
+
+      <!-- Password -->
+      <label>
+        Password:
+        <input type="password" [(ngModel)]="password" name="password" required />
+      </label>
+      <div class="error" *ngIf="loginForm.submitted && !password">
+        Password is required
+      </div>
+
+      <!-- Button -->
+      <button type="submit" class="btn-submit">Login</button>
+    </form>
+  </fieldset>
+</div>
