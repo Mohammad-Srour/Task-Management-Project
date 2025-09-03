@@ -1,0 +1,68 @@
+2025-09-02 18:36:47.200 +03:00 [INF] Starting TaskManagement API...
+2025-09-02 18:36:48.531 +03:00 [INF] HTTP GET /swagger/index.html responded 200 in 58.3935 ms
+2025-09-02 18:36:48.750 +03:00 [INF] HTTP GET /swagger/v1/swagger.json responded 200 in 20.0277 ms
+2025-09-02 18:36:51.795 +03:00 [INF] HTTP OPTIONS /profile responded 204 in 57.6690 ms
+2025-09-02 18:36:51.845 +03:00 [INF] HTTP GET /profile responded 404 in 46.6426 ms
+2025-09-02 18:37:06.060 +03:00 [INF] HTTP OPTIONS /login responded 204 in 2.1844 ms
+2025-09-02 18:37:06.065 +03:00 [INF] HTTP POST /login responded 404 in 0.4570 ms
+2025-09-02 18:37:18.671 +03:00 [INF] HTTP OPTIONS /login responded 204 in 0.3743 ms
+2025-09-02 18:37:18.676 +03:00 [INF] HTTP POST /login responded 404 in 0.1375 ms
+2025-09-02 18:37:42.608 +03:00 [INF] HTTP OPTIONS /login responded 204 in 0.5602 ms
+2025-09-02 18:37:42.612 +03:00 [INF] HTTP POST /login responded 404 in 0.1046 ms
+2025-09-02 18:38:34.991 +03:00 [INF] HTTP OPTIONS /login responded 204 in 0.3303 ms
+2025-09-02 18:38:49.814 +03:00 [INF] Starting TaskManagement API...
+2025-09-02 18:38:50.946 +03:00 [INF] HTTP GET /swagger/index.html responded 200 in 58.1990 ms
+2025-09-02 18:38:51.168 +03:00 [INF] HTTP GET /swagger/v1/swagger.json responded 200 in 16.8419 ms
+2025-09-02 18:38:52.734 +03:00 [INF] HTTP OPTIONS /login responded 204 in 42.8779 ms
+2025-09-02 18:39:14.801 +03:00 [INF] HTTP GET /login responded 404 in 7.7352 ms
+2025-09-02 18:40:47.723 +03:00 [INF] HTTP OPTIONS /login responded 204 in 2.5803 ms
+2025-09-02 18:40:47.728 +03:00 [INF] HTTP POST /login responded 404 in 0.5014 ms
+2025-09-02 18:41:33.292 +03:00 [INF] HTTP GET /login responded 404 in 0.1580 ms
+2025-09-02 18:43:33.621 +03:00 [INF] HTTP OPTIONS /login responded 204 in 1.1548 ms
+2025-09-02 18:43:33.634 +03:00 [INF] HTTP POST /login responded 404 in 0.1910 ms
+2025-09-02 18:47:34.561 +03:00 [INF] HTTP OPTIONS /login responded 204 in 3.7703 ms
+2025-09-02 18:47:34.565 +03:00 [INF] HTTP POST /login responded 404 in 0.1344 ms
+2025-09-02 18:48:30.772 +03:00 [INF] HTTP OPTIONS /login responded 204 in 3.7838 ms
+2025-09-02 18:48:30.775 +03:00 [INF] HTTP POST /login responded 404 in 0.1008 ms
+2025-09-02 18:51:16.258 +03:00 [INF] HTTP OPTIONS /api/auth/login responded 204 in 0.3676 ms
+2025-09-02 18:51:17.703 +03:00 [INF] User mohammad@example.com logged in successfully
+2025-09-02 18:51:17.712 +03:00 [INF] HTTP POST /api/auth/login responded 200 in 1446.8232 ms
+2025-09-02 18:51:19.015 +03:00 [INF] HTTP OPTIONS /api/auth/profile responded 204 in 0.1962 ms
+2025-09-02 18:51:19.084 +03:00 [INF] Profile accessed for user mohammad@example.com
+2025-09-02 18:51:19.092 +03:00 [INF] HTTP GET /api/auth/profile responded 200 in 73.0393 ms
+2025-09-02 18:51:20.624 +03:00 [INF] HTTP OPTIONS /api/tasks responded 204 in 0.1423 ms
+2025-09-02 18:51:20.746 +03:00 [INF] User "9755453e-804f-4a1a-aa7f-ad10bff0f0b5" retrieved 5 tasks
+2025-09-02 18:51:20.764 +03:00 [INF] HTTP GET /api/tasks responded 200 in 135.6560 ms
+2025-09-02 18:51:21.925 +03:00 [INF] HTTP OPTIONS /api/categories responded 204 in 0.1663 ms
+2025-09-02 18:51:21.950 +03:00 [INF] User "9755453e-804f-4a1a-aa7f-ad10bff0f0b5" retrieved 0 categories
+2025-09-02 18:51:21.952 +03:00 [INF] HTTP GET /api/categories responded 200 in 22.8791 ms
+2025-09-02 18:51:36.887 +03:00 [INF] HTTP OPTIONS /api/tasks responded 204 in 0.4602 ms
+2025-09-02 18:51:36.990 +03:00 [INF] User "9755453e-804f-4a1a-aa7f-ad10bff0f0b5" created task "b4fabc13-ef98-4763-a528-1705abd4e18a"
+2025-09-02 18:51:36.994 +03:00 [INF] HTTP POST /api/tasks responded 200 in 101.4075 ms
+2025-09-02 18:51:43.647 +03:00 [INF] HTTP OPTIONS /api/auth/profile responded 204 in 0.2646 ms
+2025-09-02 18:51:43.657 +03:00 [INF] Profile accessed for user mohammad@example.com
+2025-09-02 18:51:43.659 +03:00 [INF] HTTP GET /api/auth/profile responded 200 in 7.7242 ms
+2025-09-02 18:53:28.747 +03:00 [INF] Starting TaskManagement API...
+2025-09-02 18:53:30.080 +03:00 [INF] HTTP GET /swagger/index.html responded 200 in 60.6856 ms
+2025-09-02 18:53:30.350 +03:00 [INF] HTTP GET /swagger/v1/swagger.json responded 200 in 13.4665 ms
+2025-09-02 18:53:32.533 +03:00 [INF] HTTP OPTIONS /api/auth/profile responded 204 in 53.3701 ms
+2025-09-02 18:53:33.664 +03:00 [INF] Profile accessed for user mohammad@example.com
+2025-09-02 18:53:33.692 +03:00 [INF] HTTP GET /api/auth/profile responded 200 in 1153.3628 ms
+2025-09-02 18:53:33.772 +03:00 [INF] Profile accessed for user mohammad@example.com
+2025-09-02 18:53:33.775 +03:00 [INF] HTTP GET /api/auth/profile responded 200 in 27.8756 ms
+2025-09-02 18:53:33.915 +03:00 [INF] Profile accessed for user mohammad@example.com
+2025-09-02 18:53:33.916 +03:00 [INF] HTTP GET /api/auth/profile responded 200 in 49.5384 ms
+2025-09-02 18:53:34.082 +03:00 [INF] Profile accessed for user mohammad@example.com
+2025-09-02 18:53:34.085 +03:00 [INF] HTTP GET /api/auth/profile responded 200 in 6.7172 ms
+2025-09-02 18:53:45.175 +03:00 [INF] HTTP OPTIONS /api/tasks responded 204 in 0.5909 ms
+2025-09-02 18:53:45.339 +03:00 [INF] User "9755453e-804f-4a1a-aa7f-ad10bff0f0b5" retrieved 6 tasks
+2025-09-02 18:53:45.368 +03:00 [INF] HTTP GET /api/tasks responded 200 in 187.4279 ms
+2025-09-02 18:53:51.740 +03:00 [INF] HTTP OPTIONS /api/tasks responded 204 in 0.1409 ms
+2025-09-02 18:53:51.750 +03:00 [INF] User "9755453e-804f-4a1a-aa7f-ad10bff0f0b5" retrieved 6 tasks
+2025-09-02 18:53:51.753 +03:00 [INF] HTTP GET /api/tasks responded 200 in 8.3619 ms
+2025-09-02 18:53:56.597 +03:00 [INF] HTTP OPTIONS /api/tasks/7f39eb48-1421-41c4-ad86-0b4179a18ea7/complete responded 204 in 0.3415 ms
+2025-09-02 18:53:56.792 +03:00 [INF] User 9755453e-804f-4a1a-aa7f-ad10bff0f0b5 marked task "7f39eb48-1421-41c4-ad86-0b4179a18ea7" as complete
+2025-09-02 18:53:56.794 +03:00 [INF] HTTP PATCH /api/tasks/7f39eb48-1421-41c4-ad86-0b4179a18ea7/complete responded 200 in 193.0853 ms
+2025-09-02 18:53:57.502 +03:00 [INF] HTTP OPTIONS /api/tasks/d03a57b3-e009-4306-a367-11d157d0f160/complete responded 204 in 0.1785 ms
+2025-09-02 18:53:57.510 +03:00 [INF] User 9755453e-804f-4a1a-aa7f-ad10bff0f0b5 marked task "d03a57b3-e009-4306-a367-11d157d0f160" as complete
+2025-09-02 18:53:57.511 +03:00 [INF] HTTP PATCH /api/tasks/d03a57b3-e009-4306-a367-11d157d0f160/complete responded 200 in 5.9320 ms

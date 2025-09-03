@@ -1,6 +1,48 @@
 [
   {
-    "ContainingType": "TaskManagement.Api.Controllers.CategoriesController",
+    "ContainingType": "TaskManagement.Api.Controllers.AuthController",
+    "Method": "Login",
+    "RelativePath": "api/Auth/login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "login",
+        "Type": "TaskManagement.Api.Dtos.LoginDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TaskManagement.Api.Controllers.AuthController",
+    "Method": "Profile",
+    "RelativePath": "api/Auth/profile",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TaskManagement.Api.Controllers.AuthController",
+    "Method": "Register",
+    "RelativePath": "api/Auth/register",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "TaskManagement.Api.Dtos.RegisterDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CategoriesController",
     "Method": "GetCategories",
     "RelativePath": "api/Categories",
     "HttpMethod": "GET",
@@ -20,7 +62,7 @@
     ]
   },
   {
-    "ContainingType": "TaskManagement.Api.Controllers.CategoriesController",
+    "ContainingType": "CategoriesController",
     "Method": "CreateCategory",
     "RelativePath": "api/Categories",
     "HttpMethod": "POST",
@@ -36,7 +78,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "TaskManagement.Api.Controllers.CategoriesController",
+    "ContainingType": "CategoriesController",
     "Method": "GetCategory",
     "RelativePath": "api/Categories/{id}",
     "HttpMethod": "GET",
@@ -62,7 +104,7 @@
     ]
   },
   {
-    "ContainingType": "TaskManagement.Api.Controllers.CategoriesController",
+    "ContainingType": "CategoriesController",
     "Method": "UpdateCategory",
     "RelativePath": "api/Categories/{id}",
     "HttpMethod": "PUT",
@@ -83,7 +125,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "TaskManagement.Api.Controllers.CategoriesController",
+    "ContainingType": "CategoriesController",
     "Method": "DeleteCategory",
     "RelativePath": "api/Categories/{id}",
     "HttpMethod": "DELETE",
@@ -230,48 +272,6 @@
       {
         "Name": "id",
         "Type": "System.Guid",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "TaskManagement.Api.Controllers.AuthController",
-    "Method": "Login",
-    "RelativePath": "login",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "login",
-        "Type": "TaskManagement.Api.Dtos.LoginDto",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "TaskManagement.Api.Controllers.AuthController",
-    "Method": "Profile",
-    "RelativePath": "profile",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "TaskManagement.Api.Controllers.AuthController",
-    "Method": "Register",
-    "RelativePath": "register",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "dto",
-        "Type": "TaskManagement.Api.Dtos.RegisterDto",
         "IsRequired": true
       }
     ],

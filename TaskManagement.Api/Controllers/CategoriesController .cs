@@ -1,126 +1,125 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using TaskManagement.Api.Dtos;
 using TaskManagement.Api.Models.Entities;
+using TaskManagement.Api.Repositories;
 
-namespace TaskManagement.Api.Controllers
+[ApiController]
+[Route("api/[controller]")]
+[Authorize]
+public class CategoriesController : ControllerBase
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    [Authorize]
-    public class CategoriesController : ControllerBase
+    private readonly ICategoryRepository _categoryRepository;
+    private readonly ILogger<CategoriesController> _logger;
+
+    public CategoriesController(ICategoryRepository categoryRepository, ILogger<CategoriesController> logger)
     {
-        private readonly AppDbContext _context;
+        _categoryRepository = categoryRepository;
+        _logger = logger;
+    }
 
-        public CategoriesController(AppDbContext context)
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<CategoryDto>>> GetCategories()
+    {
+        var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(userIdStr)) return Unauthorized();
+
+        var userId = Guid.Parse(userIdStr);
+        var categories = await _categoryRepository.GetCategoriesByUserAsync(userId);
+
+        return Ok(categories.Select(c => new CategoryDto
         {
-            _context = context;
-        }
+            Id = c.Id,
+            Name = c.Name,
+            Description = c.Description
+        }));
+    }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<CategoryDto>>> GetCategories()
+    [HttpGet("{id}")]
+    public async Task<ActionResult<CategoryDto>> GetCategory(Guid id)
+    {
+        var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(userIdStr)) return Unauthorized();
+
+        var userId = Guid.Parse(userIdStr);
+        var category = await _categoryRepository.GetCategoryByIdAsync(id, userId);
+
+        if (category == null) return NotFound();
+
+        return Ok(new CategoryDto
         {
-            var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (string.IsNullOrEmpty(userIdStr)) return Unauthorized();
+            Id = category.Id,
+            Name = category.Name,
+            Description = category.Description
+        });
+    }
 
-            var userId = Guid.Parse(userIdStr);
+    [HttpPost]
+    public async Task<IActionResult> CreateCategory([FromBody] CategoryDto dto)
+    {
+        if (dto == null) return BadRequest("Invalid data");
 
-            var categories = await _context.Categories
-                .Where(c => c.UserId == userId)
-                .Select(c => new CategoryDto
-                {
-                    Id = c.Id,
-                    Name = c.Name,
-                    Description = c.Description
-                })
-                .ToListAsync();
+        var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(userIdStr)) return Unauthorized();
 
-            return Ok(categories);
-        }
-
-        [HttpGet("{id}")]
-        public async Task<ActionResult<CategoryDto>> GetCategory(Guid id)
+        var userId = Guid.Parse(userIdStr);
+        var category = new Category
         {
-            var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (string.IsNullOrEmpty(userIdStr)) return Unauthorized();
+            Name = dto.Name,
+            Description = dto.Description,
+            UserId = userId
+        };
 
-            var userId = Guid.Parse(userIdStr);
+        var created = await _categoryRepository.AddCategoryAsync(category);
 
-            var category = await _context.Categories
-                .Where(c => c.UserId == userId && c.Id == id)
-                .Select(c => new CategoryDto
-                {
-                    Id = c.Id,
-                    Name = c.Name,
-                    Description = c.Description
-                })
-                .FirstOrDefaultAsync();
-
-            if (category == null) return NotFound();
-
-            return Ok(category);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> CreateCategory([FromBody] CategoryDto dto)
+        return Ok(new CategoryDto
         {
-            var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (string.IsNullOrEmpty(userIdStr)) return Unauthorized();
+            Id = created.Id,
+            Name = created.Name,
+            Description = created.Description
+        });
+    }
 
-            var userId = Guid.Parse(userIdStr);
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateCategory(Guid id, [FromBody] CategoryDto dto)
+    {
+        var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(userIdStr)) return Unauthorized();
 
-            var category = new Category
-            {
-                Name = dto.Name,
-                Description = dto.Description,
-                UserId = userId
-            };
+        var userId = Guid.Parse(userIdStr);
 
-            _context.Categories.Add(category);
-            await _context.SaveChangesAsync();
-
-            return Ok(category);
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCategory(Guid id, [FromBody] CategoryDto dto)
+        var category = new Category
         {
-            var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (string.IsNullOrEmpty(userIdStr)) return Unauthorized();
+            Id = id,
+            Name = dto.Name,
+            Description = dto.Description,
+            UserId = userId
+        };
 
-            var userId = Guid.Parse(userIdStr);
+        var updated = await _categoryRepository.UpdateCategoryAsync(category);
 
-            var category = await _context.Categories
-                .FirstOrDefaultAsync(c => c.Id == id && c.UserId == userId);
+        if (updated == null) return NotFound("Category not found");
 
-            if (category == null) return NotFound("Category not found");
-
-            category.Name = dto.Name;
-            category.Description = dto.Description;
-
-            await _context.SaveChangesAsync();
-            return Ok(category);
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCategory(Guid id)
+        return Ok(new CategoryDto
         {
-            var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (string.IsNullOrEmpty(userIdStr)) return Unauthorized();
+            Id = updated.Id,
+            Name = updated.Name,
+            Description = updated.Description
+        });
+    }
 
-            var userId = Guid.Parse(userIdStr);
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteCategory(Guid id)
+    {
+        var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(userIdStr)) return Unauthorized();
 
-            var category = await _context.Categories
-                .FirstOrDefaultAsync(c => c.Id == id && c.UserId == userId);
+        var userId = Guid.Parse(userIdStr);
+        var deleted = await _categoryRepository.DeleteCategoryAsync(id, userId);
 
-            if (category == null) return NotFound("Category not found");
+        if (!deleted) return NotFound("Category not found");
 
-            _context.Categories.Remove(category);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
+        return NoContent();
     }
 }

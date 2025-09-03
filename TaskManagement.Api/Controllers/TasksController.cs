@@ -1,152 +1,206 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using TaskManagement.Api.Dtos;
 using TaskManagement.Api.Models.Entities;
 using TaskManagement.Api.Models.Enums;
+using TaskManagement.Api.Repositories;
 
 namespace TaskManagement.Api.Controllers
 {
-    [Authorize] 
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class TasksController : ControllerBase
     {
-        private readonly AppDbContext _context;
-        public TasksController(AppDbContext context)
+        private readonly ITaskRepository _taskRepository;
+        private readonly ILogger<TasksController> _logger;
+
+        public TasksController(ITaskRepository taskRepository, ILogger<TasksController> logger)
         {
-            _context = context;
+            _taskRepository = taskRepository;
+            _logger = logger;
         }
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<TaskItem>>> GetTasks(
-     [FromQuery] TaskManagement.Api.Models.Enums.TaskStatus? status,
-     [FromQuery] TaskPriority? priority,
-     [FromQuery] DateTime? dueDate)
+
+        private Guid GetUserId()
         {
             var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (string.IsNullOrEmpty(userIdStr)) return Unauthorized();
+            if (string.IsNullOrEmpty(userIdStr))
+                throw new UnauthorizedAccessException("User not authorized");
+            return Guid.Parse(userIdStr);
+        }
 
-            var userId = Guid.Parse(userIdStr);
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<TaskItem>>> GetTasks(
+            [FromQuery]TaskManagement.Api.Models.Enums.TaskStatus? status,
+            [FromQuery] TaskPriority? priority,
+            [FromQuery] DateTime? dueDate)
+        {
+            try
+            {
+                var userId = GetUserId();
+                var tasks = await _taskRepository.GetTasksByUserAsync(userId);
 
-            var query = _context.Tasks
-                .Where(t => t.UserId == userId); 
+                if (status.HasValue)
+                    tasks = tasks.Where(t => t.Status == status.Value);
+                if (priority.HasValue)
+                    tasks = tasks.Where(t => t.Priority == priority.Value);
+                if (dueDate.HasValue)
+                    tasks = tasks.Where(t => t.DueDate.HasValue && t.DueDate.Value.Date == dueDate.Value.Date);
 
-            if (status.HasValue) query = query.Where(t => t.Status == status.Value);
-            if (priority.HasValue) query = query.Where(t => t.Priority == priority.Value);
-            if (dueDate.HasValue) query = query.Where(t => t.DueDate.HasValue && t.DueDate.Value.Date == dueDate.Value.Date);
+                _logger.LogInformation("User {UserId} retrieved {Count} tasks", userId, tasks.Count());
 
-            return await query.ToListAsync();
+                return Ok(tasks);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return Unauthorized();
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateTask([FromBody] TaskCreateDto dto)
         {
-            var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (string.IsNullOrEmpty(userIdStr)) return Unauthorized();
+            if (dto == null)
+                return BadRequest("Invalid data");
 
-            var userId = Guid.Parse(userIdStr);
-
-            var task = new TaskItem
+            try
             {
-                Title = dto.Title,
-                Description = dto.Description,
-                Status = dto.Status,
-                Priority = dto.Priority,
-                DueDate = dto.DueDate,
-                UserId = userId
-            };
+                var userId = GetUserId();
 
-            _context.Tasks.Add(task);
-            await _context.SaveChangesAsync();
+                var task = new TaskItem
+                {
+                    Title = dto.Title,
+                    Description = dto.Description,
+                    Status = dto.Status,
+                    Priority = dto.Priority,
+                    DueDate = dto.DueDate,
+                    UserId = userId
+                };
 
-            return Ok(task);
+                var createdTask = await _taskRepository.AddTaskAsync(task);
+
+                _logger.LogInformation("User {UserId} created task {TaskId}", userId, createdTask.Id);
+                return Ok(createdTask);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return Unauthorized();
+            }
         }
 
-
         [HttpGet("{id}")]
-        public IActionResult GetTaskById(Guid id)
+        public async Task<IActionResult> GetTaskById(Guid id)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (userId == null) return Unauthorized();
+            try
+            {
+                var userId = GetUserId();
+                var task = await _taskRepository.GetTaskByIdAsync(id, userId);
 
-            var task = _context.Tasks.FirstOrDefault(t => t.Id == id && t.UserId.ToString() == userId);
-            if (task == null) return NotFound("Task not found");
+                if (task == null)
+                    return NotFound("Task not found");
 
-            return Ok(task);
+                return Ok(task);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return Unauthorized();
+            }
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateTask(Guid id, [FromBody] TaskCreateDto dto)
+        public async Task<IActionResult> UpdateTask(Guid id, [FromBody] TaskCreateDto dto)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (userId == null) return Unauthorized();
+            try
+            {
+                var userId = GetUserId();
 
-            var task = _context.Tasks.FirstOrDefault(t => t.Id == id && t.UserId.ToString() == userId);
-            if (task == null) return NotFound("Task not found");
+                var task = await _taskRepository.GetTaskByIdAsync(id, userId);
+                if (task == null)
+                    return NotFound("Task not found");
 
-            task.Title = dto.Title;
-            task.Description = dto.Description;
-            task.Status = dto.Status;
-            task.Priority = dto.Priority;
-            task.DueDate = dto.DueDate;
-            task.UpdatedAt = DateTime.UtcNow;
+                task.Title = dto.Title;
+                task.Description = dto.Description;
+                task.Status = dto.Status;
+                task.Priority = dto.Priority;
+                task.DueDate = dto.DueDate;
+                task.UpdatedAt = DateTime.UtcNow;
 
-            _context.SaveChanges();
-            return Ok(task);
+                var updated = await _taskRepository.UpdateTaskAsync(task);
+
+                return Ok(updated);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return Unauthorized();
+            }
         }
 
         [HttpPatch("{id}/complete")]
-        public IActionResult MarkComplete(Guid id)
+        public async Task<IActionResult> MarkComplete(Guid id)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (userId == null) return Unauthorized();
+            try
+            {
+                var userId = GetUserId();
 
-            var task = _context.Tasks.FirstOrDefault(t => t.Id == id && t.UserId.ToString() == userId);
-            if (task == null) return NotFound("Task not found");
+                var task = await _taskRepository.GetTaskByIdAsync(id, userId);
+                if (task == null)
+                    return NotFound("Task not found");
 
-            task.IsCompleted = true;
-            task.Status = Models.Enums.TaskStatus.Done;
-            task.UpdatedAt = DateTime.UtcNow;
+                task.IsCompleted = true;
+                task.Status = TaskManagement.Api.Models.Enums.TaskStatus.Done;
+                task.UpdatedAt = DateTime.UtcNow;
 
-            _context.SaveChanges();
-            return Ok(task);
+                var updated = await _taskRepository.UpdateTaskAsync(task);
+                return Ok(updated);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return Unauthorized();
+            }
         }
 
         [HttpPatch("{id}/incomplete")]
-        public IActionResult MarkIncomplete(Guid id)
+        public async Task<IActionResult> MarkIncomplete(Guid id)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (userId == null) return Unauthorized();
+            try
+            {
+                var userId = GetUserId();
 
-            var task = _context.Tasks.FirstOrDefault(t => t.Id == id && t.UserId.ToString() == userId);
-            if (task == null) return NotFound("Task not found");
+                var task = await _taskRepository.GetTaskByIdAsync(id, userId);
+                if (task == null)
+                    return NotFound("Task not found");
 
-            task.IsCompleted = false;
-            task.Status = Models.Enums.TaskStatus.New;
-            task.UpdatedAt = DateTime.UtcNow;
+                task.IsCompleted = false;
+                task.Status = TaskManagement.Api.Models.Enums.TaskStatus.New;
+                task.UpdatedAt = DateTime.UtcNow;
 
-            _context.SaveChanges();
-            return Ok(task);
+                var updated = await _taskRepository.UpdateTaskAsync(task);
+                return Ok(updated);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return Unauthorized();
+            }
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteTask(Guid id)
+        public async Task<IActionResult> DeleteTask(Guid id)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (userId == null) return Unauthorized();
+            try
+            {
+                var userId = GetUserId();
 
-            var task = _context.Tasks.FirstOrDefault(t => t.Id == id && t.UserId.ToString() == userId);
-            if (task == null) return NotFound("Task not found");
+                var deleted = await _taskRepository.DeleteTaskAsync(id, userId);
+                if (!deleted)
+                    return NotFound("Task not found");
 
-            _context.Tasks.Remove(task);
-            _context.SaveChanges();
-
-            return NoContent(); 
+                return NoContent();
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return Unauthorized();
+            }
         }
-
-
-
-
     }
 }
