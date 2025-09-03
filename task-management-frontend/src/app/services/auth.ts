@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 interface RegisterDto {
@@ -17,7 +17,7 @@ interface LoginDto {
   providedIn: 'root'
 })
 export class Auth {
-  private apiUrl = 'https://localhost:7073'; 
+  private apiUrl = 'https://localhost:7073/api/auth'; // ← مسار مطابق للـ Controller
 
   constructor(private http: HttpClient) {}
 
@@ -46,10 +46,9 @@ export class Auth {
   }
 
   getProfile(): Observable<any> {
-  const token = localStorage.getItem('token');
-  return this.http.get(`${this.apiUrl}/profile`, {
-    headers: { Authorization: `Bearer ${token}` }
-  });
-}
+    const token = this.getToken();
+    const headers = token ? new HttpHeaders().set('Authorization', `Bearer ${token}`) : undefined;
 
+    return this.http.get(`${this.apiUrl}/profile`, { headers });
+  }
 }
